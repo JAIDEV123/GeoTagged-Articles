@@ -11,10 +11,6 @@ def lookup(geo):
     # get feed from Google
     feed = feedparser.parse("http://news.google.com/news?geo={}&output=rss?hl=en-US&gl=US&ceid=US:en".format(urllib.parse.quote(geo, safe="")))
 
-    # if no items in feed, get feed from Onion
-    if not feed["items"]:
-        feed = feedparser.parse("http://www.theonion.com/feeds/rss")
-
     # cache results
     lookup.cache[geo] = [{"link": item["link"], "title": item["title"]} for item in feed["items"]]
 
