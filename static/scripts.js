@@ -119,6 +119,33 @@ $(function() {
 });
 
 /**
+ * Shows info window at marker with content.
+ */
+function showInfo(marker, content)
+{
+    // start div
+    var div = "<div id='info'>";
+    if (typeof(content) == "undefined")
+    {
+        // http://www.ajaxload.info/
+        div += "<img alt='loading' src='/static/ajax-loader.gif'/>";
+    }
+    else
+    {
+        div += content;
+    }
+
+    // end div
+    div += "</div>";
+
+    // set info window's content
+    info.setContent(div);
+
+    // open info window (if not already open)
+    info.open(map, marker);
+}
+
+/**
  * Adds marker for place to map.
  */
 function addMarker(place)
@@ -135,14 +162,18 @@ function addMarker(place)
     });
     
     $.getJSON(Flask.url_for("articles"), {geo: place[1]}, function(articles) {
+        
+        var piece;
+
         if(!$.isEmptyObject(articles)){
-            var piece="<ul>";
+            piece="<ul>";
             for (var i=0;i<articles.length; i++)
             {
                 piece+="<li><a target='_NEW' href='"+articles[i].link+"'>"+articles[i].title+"</a></li>";
             }
+            piece+="</ul>";
         }
-        piece+="</ul>";
+        
         google.maps.event.addListener(marker, 'click', function(){
             showInfo(marker, piece);
         });
@@ -157,13 +188,7 @@ function configure()
 {
     // update UI after map has been dragged
     google.maps.event.addListener(map, "dragend", function() {
-
-        // if info window isn't open
-        // http://stackoverflow.com/a/12410385
-        if (!info.getMap || !info.getMap())
-        {
-            update();
-        }
+        update();
     });
 
     // update UI after zoom level changes
@@ -226,11 +251,7 @@ function configure()
  */
 function removeMarkers()
 {
-    // TODO
-    for(var i=0, n=markers.length; i<n; i++)
-    {
-        markers[i].setMap(null);
-    }
+    markers = [];
 }
 
 /**
@@ -275,33 +296,6 @@ function search(query, syncResults, asyncResults)
         // call typeahead's callback with no results
         asyncResults([]);
     });
-}
-
-/**
- * Shows info window at marker with content.
- */
-function showInfo(marker, content)
-{
-    // start div
-    var div = "<div id='info'>";
-    if (typeof(content) == "undefined")
-    {
-        // http://www.ajaxload.info/
-        div += "<img alt='loading' src='/static/ajax-loader.gif'/>";
-    }
-    else
-    {
-        div += content;
-    }
-
-    // end div
-    div += "</div>";
-
-    // set info window's content
-    info.setContent(div);
-
-    // open info window (if not already open)
-    info.open(map, marker);
 }
 
 /**

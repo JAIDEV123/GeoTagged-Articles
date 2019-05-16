@@ -23,6 +23,7 @@ US	99510	Anchorage	Alaska	AK	Anchorage Municipality	020			61.1446	-149.8784	1
 US	99511	Anchorage	Alaska	AK	Anchorage Municipality	020			61.0683	-149.8005	1
 US	99513	Anchorage	Alaska	AK	Anchorage Municipality	020			61.2149	-149.8862	1
 US	99514	Anchorage	Alaska	AK	Anchorage Municipality	020			61.2181	-149.9003	1
+US	99514	Jaidev	Alaska	AK	Anchorage Municipality	020			61.2181	-149.9003	1
 US	99515	Anchorage	Alaska	AK	Anchorage Municipality	020			61.1194	-149.8974	1
 US	99516	Anchorage	Alaska	AK	Anchorage Municipality	020			61.1054	-149.78	1
 US	99517	Anchorage	Alaska	AK	Anchorage Municipality	020			61.1901	-149.9361	1
