@@ -131,7 +131,7 @@ function addMarker(place)
         map:map,
         title:place[2]+  " - " + place[1],
         label: place[2] +", "+ place[1],
-        icon: image
+        icon: 'http://maps.google.com/mapfiles/ms/micons/red-pushpin.png'
     });
     
     $.getJSON(Flask.url_for("articles"), {geo: place[1]}, function(articles) {
@@ -324,7 +324,7 @@ function update()
     $.getJSON(Flask.url_for("update"), parameters)
     .done(function(data, textStatus, jqXHR) {
 
-        console.log(data);
+       console.log(data);
 
        // remove old markers from map
        removeMarkers();

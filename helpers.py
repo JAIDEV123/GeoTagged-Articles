@@ -19,7 +19,7 @@ def lookup(geo):
     lookup.cache[geo] = [{"link": item["link"], "title": item["title"]} for item in feed["items"]]
 
     # return results
-    return lookup.cache[geo]
+    return []
 
 # initialize cache
 lookup.cache = {}
