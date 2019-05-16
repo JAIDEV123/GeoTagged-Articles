@@ -11,28 +11,88 @@ var info = new google.maps.InfoWindow();
 $(function() {
 
     // styles for map
-    // https://developers.google.com/maps/documentation/javascript/styling
+    // https://developers.google.com/maps/documentation/javascript/styling  
     var styles = [
+            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+            {
+              featureType: 'administrative.locality',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry',
+              stylers: [{color: '#263c3f'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#6b9a76'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [{color: '#38414e'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#212a37'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#9ca5b3'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [{color: '#746855'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#1f2835'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#f3d19c'}]
+            },
+            {
+              featureType: 'transit',
+              elementType: 'geometry',
+              stylers: [{color: '#2f3948'}]
+            },
+            {
+              featureType: 'transit.station',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [{color: '#17263c'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#515c6d'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.stroke',
+              stylers: [{color: '#17263c'}]
+            }
+          ];
 
-        // hide Google's labels
-        {
-            featureType: "all",
-            elementType: "labels",
-            stylers: [
-                {visibility: "off"}
-            ]
-        },
-
-        // hide roads
-        {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [
-                {visibility: "off"}
-            ]
-        }
-
-    ];
 
     // options for map
     // https://developers.google.com/maps/documentation/javascript/reference#MapOptions
@@ -43,7 +103,7 @@ $(function() {
         maxZoom: 14,
         panControl: true,
         styles: styles,
-        zoom: 13,
+        zoom: 12,
         zoomControl: true
     };
 
@@ -63,17 +123,18 @@ $(function() {
  */
 function addMarker(place)
 {
-    var myL = new google.maps.LatLng(place["latitude"], place["longitude"]);
+    // console.log(place);
+    var myL = new google.maps.LatLng(place[9], place[10]);
     var image='http://maps.google.com/mapfiles/ms/micons/red-pushpin.png';
     var marker=new google.maps.Marker({
         position: myL,
         map:map,
-        title:place["place_name"]+  " - " + place["postal_code"],
-        label: place["place_name"] +", "+ place["admin_name1"],
+        title:place[2]+  " - " + place[1],
+        label: place[2] +", "+ place[1],
         icon: image
     });
     
-    $.getJSON(Flask.url_for("articles"), {geo: place.postal_code}, function(articles) {
+    $.getJSON(Flask.url_for("articles"), {geo: place[1]}, function(articles) {
         if(!$.isEmptyObject(articles)){
             var piece="<ul>";
             for (var i=0;i<articles.length; i++)
@@ -188,7 +249,6 @@ function search(query, syncResults, asyncResults)
         // call typeahead's callback with search results (i.e., places)
         suggestions = [];
         for ( var i in data ) {
-        	console.log(i)
         	suggestions.push({
         		"place_name" : data[i][2],
         		"admin_name1": data[i][3],
@@ -264,8 +324,10 @@ function update()
     $.getJSON(Flask.url_for("update"), parameters)
     .done(function(data, textStatus, jqXHR) {
 
+        console.log(data);
+
        // remove old markers from map
-       // removeMarkers();
+       removeMarkers();
 
        // add new markers to map
        for (var i = 0; i < data.length; i++)
