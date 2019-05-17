@@ -10,7 +10,7 @@ app = Flask(__name__)
 JSGlue(app)
 
 # configure CS50 Library to use SQLite database
-db = create_engine("sqlite:///mashup.db")
+db = create_engine("sqlite:///location.db")
 
 @app.route("/")
 def index():
